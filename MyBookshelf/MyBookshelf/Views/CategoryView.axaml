@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MyBookshelf.Views.CategoryView">
+    <Border BorderBrush="#eeeeee" 
+            BorderThickness="3"
+            Background="#eeeeee" 
+            CornerRadius="10" 
+            Padding="5">
+	    <StackPanel Background="#eeeeee">
+            <DockPanel>
+                <TextBlock 
+                    Margin="5" 
+                    FontSize="25" 
+                    FontWeight="Bold" 
+                    Text="{Binding Type}"/>
+            </DockPanel>
+			<ListBox Items="{Binding Books}" SelectedItem="{Binding SelectedBook}"
+                     Background="Transparent" >
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+			</ListBox>
+        </StackPanel>
+	</Border>
+</UserControl>

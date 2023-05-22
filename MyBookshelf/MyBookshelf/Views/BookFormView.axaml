@@ -1,0 +1,128 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MyBookshelf.Views.BookFormView">
+    <UserControl.Styles>
+
+        <Style Selector="StackPanel">
+            <Setter Property="Grid.Row" Value="1"></Setter>
+        </Style>
+        <Style Selector="TextBlock">
+			<!--
+			<Setter Property="FontSize" Value="20"/>
+            <Setter Property="Margin" Value="0 25 0 0"/>
+			-->
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Margin" Value="0 0 0 25"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+        <Style Selector="DatePicker">
+            <Setter Property="Margin" Value="0 0 0 25"/>
+        </Style>
+        <Style Selector="NumericUpDown">
+            <Setter Property="Margin" Value="0 0 0 25"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="ShowButtonSpinner" Value="True"/>
+            <Setter Property="Minimum" Value="0"/>
+        </Style>
+    </UserControl.Styles>
+    <ScrollViewer>
+        <Grid ShowGridLines="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height ="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+            <TextBlock Margin="0 20 0 0" 
+                       Grid.Column="0" Grid.ColumnSpan="2" 
+                       HorizontalAlignment="Center" 
+                       FontSize="30" 
+                       FontWeight="Bold" 
+                       Text="New Book Record"/>
+            <StackPanel Margin="30" Spacing="5">
+                <TextBlock FontSize="20" 
+                           Text="Title:"/>
+                <TextBox MaxLength="50" Text="{Binding Title}"/>
+                <TextBlock FontSize="20" Text="Author:"/>
+                <TextBox MaxLength="50" Text="{Binding Author}"/>
+                <TextBlock FontSize="20" Text="Pages:"/>
+                <NumericUpDown Maximum="100000"
+                               Value="{Binding Pages}"/>
+                <TextBlock FontSize="20" Text="Start Reading:"/>
+                
+                <DatePicker FontSize="15"
+                            Padding="10 0 0 0"
+                            SelectedDate="{Binding ReadingStart}"/>
+                <TextBlock FontSize="20" Text="Finish Reading:"/>
+                <DatePicker FontSize="15"
+                            Padding="10 0 0 0"
+                            SelectedDate="{Binding ReadingFinish}"/>
+                <DockPanel Margin="0 20 0 0">
+                    <StackPanel HorizontalAlignment="Left">
+						<TextBlock Margin="0"
+                                   FontSize="20"
+                                   Text="Category:"/>
+						<ItemsControl Items="{Binding CategoryCheckBoxes}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked}"/>
+								</DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+					<StackPanel HorizontalAlignment="Right" 
+                                Margin="30 0 0 25">
+						<TextBlock Margin="0" 
+                                   FontSize="20"
+                                   Text="Genre:"/>
+						<ItemsControl Items="{Binding GenreCheckBoxes}">
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<WrapPanel/>
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<CheckBox Margin ="5" 
+                                              Content="{Binding Name}" 
+                                              IsChecked="{Binding IsChecked}"/>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</StackPanel>
+                </DockPanel>
+				<TextBlock FontSize="20" Text="Rating:"/>
+                <NumericUpDown Maximum="10"
+                               Value="{Binding Rating}"/>
+                <TextBlock FontSize="20" Text="Note:"/>
+                <TextBox Height="150" 
+                         MaxLength="1000"
+                         TextWrapping="Wrap" 
+                         Text="{Binding Note}"/>
+            </StackPanel>
+            <Button Command="{Binding SubmitCommand}"
+                    Grid.Row="2" Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    Grid.ColumnSpan="2"
+                    Margin="0 0 100 30"
+                    Background="#41644A"
+                    Foreground="White"
+                    Content="Submit"/>
+            <Button Command="{Binding CancelCommand}" 
+                    Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" 
+                    Grid.ColumnSpan="2" 
+                    Margin="100 0 0 30"
+                    Content="Cancel"/>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:local="using:MyBookshelf.Views"
+             x:Class="MyBookshelf.Views.HomePageView">
+        <Grid ShowGridLines="False">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="100"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+            <StackPanel>
+                <DockPanel Grid.Row="0"
+                           Margin="30 0 30 20">
+                    <TextBlock VerticalAlignment="Bottom"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="#E86A33"
+                               Text="My Bookshelf"/>
+                    <PathIcon  Margin="20 0 0 0"
+                               VerticalAlignment="Bottom"
+                               Height="60"
+                               Width="60"
+                               Data="{StaticResource library_regular}"
+                               Foreground="#E86A33"/>
+                    <Button VerticalAlignment="Bottom"
+                            HorizontalAlignment="Right"
+                            Padding="10"
+                            Background="#41644A"
+                            Command="{Binding AddBookCommand}">
+                        <PathIcon Data="{StaticResource book_add_regular}"
+                                  Background="Transparent"
+                                  Foreground="White"/>
+                    </Button>
+                </DockPanel>
+                <Border Padding="5"
+                        Margin="30 0"
+                        CornerRadius="5"
+                        Background="IndianRed"
+                        BorderBrush="IndianRed"
+                        IsVisible="{Binding ExceptionVisible}">
+                    <DockPanel IsVisible="{Binding ExceptionVisible}">
+                        <TextBlock Margin="5"
+                                   VerticalAlignment="Center"
+                                   Text="{Binding ExceptionMessage}"/>
+                        <Button Command="{Binding ExceptionCommand}"
+                                Margin="5"
+                                Content="Ok"/>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+			
+            <ListBox Items="{Binding Categories}" SelectedItem="{Binding SelectedCategory}"
+                     Grid.Row="1" 
+                     Margin="50 5 50 5" 
+                     Background="Transparent"/>
+		</Grid>
+    
+</UserControl>

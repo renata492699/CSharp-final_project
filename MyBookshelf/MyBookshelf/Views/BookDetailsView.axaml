@@ -1,0 +1,121 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MyBookshelf.Views.BookDetailsView">
+	<UserControl.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="FontSize" Value="18"></Setter>
+            <Setter Property="FontWeight" Value="Medium"></Setter>
+        </Style>
+    </UserControl.Styles>
+    <ScrollViewer>
+        <StackPanel Margin="30">
+            <DockPanel>
+                <TextBlock 
+                    Margin="0 0 0 0" 
+                    FontSize="25" FontWeight="Bold" 
+                    Foreground="#E86A33" 
+                    HorizontalAlignment="Left" 
+                    Text="{Binding Title}"></TextBlock>
+                <DockPanel HorizontalAlignment="Right" 
+                           VerticalAlignment="Top">
+                    <Button Margin="20" 
+                            Background="#41644A"
+                            FontWeight="Medium"
+                            Foreground="White"
+                            Command="{Binding EditBookCommand}"
+                            Content="Edit Book"/>
+                    <Button Command="{Binding GoHomeCommand}" 
+                            Content="Home"/>
+                </DockPanel>
+            </DockPanel>
+            <TextBlock Margin="50 0 50 10" 
+                       FontWeight="Bold" 
+                       Text="{Binding Author}"/>
+            <TextBlock Margin="50 10 50 10" 
+                       Text="{Binding PagesString}"/>
+			<DockPanel Margin="50 10 50 10">
+                <StackPanel Margin="0 0 100 0">
+                    <TextBlock Text="Reading Start: "/>
+                    <TextBlock FontSize="15" 
+                               FontWeight="Regular"
+                               Text="{Binding ReadingStartString}"/>
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Reading Finish: "/>
+                    <TextBlock FontSize="15" 
+                               FontWeight="Regular"
+                               Text="{Binding ReadingFinishString}"/>
+                </StackPanel>
+            </DockPanel>
+            <ItemsControl Items="{Binding Genres}" 
+                          Margin="50 10 50 10">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="5" 
+                                BorderBrush="#E86A33" 
+                                BorderThickness="0" 
+                                CornerRadius="15" 
+                                Background="#E86A33">
+                            <TextBlock Margin="10" 
+                                       FontSize="11" 
+                                       Foreground="White"
+                                       Text="{Binding Type}"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <DockPanel Margin="50 10 50 5">
+                <TextBlock VerticalAlignment="Top" 
+                           HorizontalAlignment="Left" 
+                           Foreground="#E86A33" 
+                           FontSize="25" 
+                           Text="My Note"/>
+                <TextBlock VerticalAlignment="Top" 
+                           HorizontalAlignment="Right" 
+                           FontSize="30" 
+                           Text="{Binding RatingString}"/>
+            </DockPanel>
+            <Border Margin="50 10 50 10" 
+                    Background="#eeeeee" 
+                    BorderBrush="#eeeeee" 
+                    CornerRadius="10">
+                <TextBlock TextWrapping="Wrap" 
+                           FontSize="15" 
+                           FontWeight="Regular"
+                           Padding="10" 
+                           Height="150" 
+                           Text="{Binding Note}"/>
+            </Border>
+            <Button Background="IndianRed" 
+                    IsVisible="{Binding ConfirmDeleteVisible}"
+                    HorizontalAlignment="Right" 
+                    Margin="10" 
+                    Command="{Binding ConfirmDeleteCommand}"
+                    Content="Delete Book"/>
+            <Border Padding="5"
+                    CornerRadius="5"
+                    Background="IndianRed"
+                    BorderBrush="IndianRed"
+                    IsVisible="{Binding DeleteVisible}">
+                <DockPanel IsVisible="{Binding DeleteVisible}">
+                    <TextBlock Margin="5" 
+                               Text="Do you want to delete this book?"/>
+                    <Button Command="{Binding DeleteCommandAsync}" 
+                            Margin="5"
+                            Content="Yes"/>
+                    <Button Command="{Binding CancelDeleteCommand}"
+                            Margin="5"
+                            Content="No"/>
+                </DockPanel>
+            </Border>
+		</StackPanel>
+    </ScrollViewer>
+</UserControl>
