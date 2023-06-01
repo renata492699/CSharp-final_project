@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using MyBookshelf.Models;
 using MyBookshelf.Models.EntityFramework;
 
@@ -17,7 +18,7 @@ namespace MyBookshelf.ViewModels
 			BookForm = new BookFormViewModel(dbRepository, AddBook, GoBack);
 		}
 
-		private async void AddBook()
+		private async Task AddBook()
 		{
 			var categories =
 				BookForm.GetChecked(BookForm.CategoryCheckBoxes);
@@ -48,6 +49,7 @@ namespace MyBookshelf.ViewModels
 					ExceptionMessage = "Something went wrong while adding a book. Please try again."
 				});
 			}
+
 
 		}
 

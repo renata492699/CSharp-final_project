@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Threading.Tasks;
 using MyBookshelf.Models;
 using MyBookshelf.Models.EntityFramework;
 using ReactiveUI;
@@ -78,12 +79,12 @@ namespace MyBookshelf.ViewModels
 		public ObservableCollection<CheckBox> GenreCheckBoxes { get; set; }
 
 
-		public BookFormViewModel(MyBookshelfRepository dbRepository, Action submit, Action cancel)
+		public BookFormViewModel(MyBookshelfRepository dbRepository, Func<Task> submit, Action cancel)
 		{
 			_dbRepository = dbRepository;
 			
 			var submitCanExecute = this.WhenAnyValue(m => m.Title, m => !string.IsNullOrWhiteSpace(m));
-			SubmitCommand = ReactiveCommand.Create(submit, submitCanExecute);
+			SubmitCommand = ReactiveCommand.CreateFromTask(submit, submitCanExecute);
 			CancelCommand = ReactiveCommand.Create(cancel);
 			
 			CategoryCheckBoxes = new ObservableCollection<CheckBox>();

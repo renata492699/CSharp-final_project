@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using DynamicData;
 using MyBookshelf.Models;
 using MyBookshelf.Models.EntityFramework;
@@ -33,7 +34,7 @@ namespace MyBookshelf.ViewModels
 			};
 		}
 
-		private async void UpdateBook()
+		private async Task UpdateBook()
 		{
 			var categories =
 				BookForm.GetChecked(BookForm.CategoryCheckBoxes);
