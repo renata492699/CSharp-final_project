@@ -59,18 +59,11 @@ namespace MyBookshelf.Models
 		public async Task<List<Book>> BooksByGenreInCategoryAsync(int genreId, List<int> bookIds)
 		{
 			using var dbContext = new MyBookshelfDbContext();
-			var result = new List<Book>();
-			foreach (var bookId in bookIds)
-			{
-				var book = await dbContext.Books
-					.Include(b => b.Genres)
-					.FirstAsync(b => b.Id == bookId);
-				if (book.Genres.Select(g => g.Id).Contains(genreId))
-				{
-					result.Add(book);
-				}
-			}
-			return result;
+			return await dbContext.Books
+				.Include(b => b.Genres)
+				.Where(book => bookIds.Contains(book.Id))
+				.Where(book => book.Genres.Any(g => g.Id == genreId))
+				.ToListAsync();
 		}
 
 		public async Task<bool> DeleteBookAsync(int id)
