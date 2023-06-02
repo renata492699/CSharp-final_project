@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using MyBookshelf.Models;
 using ReactiveUI;
@@ -44,7 +45,7 @@ namespace MyBookshelf.ViewModels
 			_navigationStore = navigationStore;
 			_dbRepository = dbRepository;
 			_categories = new ObservableCollection<CategoryViewModel>();
-			LoadCategoriesAsync();
+			RxApp.MainThreadScheduler.Schedule(LoadCategoriesAsync);
 
 			this.WhenAnyValue(m => m.SelectedCategory)
 				.Throttle(TimeSpan.FromMilliseconds(300))

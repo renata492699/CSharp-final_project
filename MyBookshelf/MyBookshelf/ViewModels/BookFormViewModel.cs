@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Threading.Tasks;
 using MyBookshelf.Models;
 using MyBookshelf.Models.EntityFramework;
@@ -91,8 +92,8 @@ namespace MyBookshelf.ViewModels
 			GenreCheckBoxes = new ObservableCollection<CheckBox>();
 			Categories = new ObservableCollection<int>();
 			Genres = new ObservableCollection<int>();
-			LoadCategoriesAsync();
-			LoadGenresAsync();
+			RxApp.MainThreadScheduler.Schedule(LoadCategoriesAsync);
+			RxApp.MainThreadScheduler.Schedule(LoadGenresAsync);
 		}
 
 		private async void LoadCategoriesAsync()

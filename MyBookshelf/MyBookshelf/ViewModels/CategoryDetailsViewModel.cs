@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using MyBookshelf.Models;
 using MyBookshelf.Models.EntityFramework;
 using ReactiveUI;
@@ -11,6 +14,7 @@ namespace MyBookshelf.ViewModels
 {
 	public class CategoryDetailsViewModel : ViewModelBase
 	{
+		private readonly Category _selectedCategory;
 		private readonly MyBookshelfRepository _dbRepository;
 		private readonly NavigationStore _navigationStore;
 
@@ -45,6 +49,7 @@ namespace MyBookshelf.ViewModels
 		public CategoryDetailsViewModel(Category selectedCategory, MyBookshelfRepository dbRepository,
 			NavigationStore navigationStore)
 		{
+			_selectedCategory = selectedCategory;
 			_dbRepository = dbRepository;
 			_navigationStore = navigationStore;
 			_allBooksInCat = new List<Book>();
@@ -52,27 +57,29 @@ namespace MyBookshelf.ViewModels
 			Type = selectedCategory.Type;
 			Genres = new ObservableCollection<GenreViewModel>();
 			_books = new ObservableCollection<BookViewModel>();
-			
+
+			var selectedBookCommand = ReactiveCommand.CreateFromTask<BookViewModel?>(BookSelectedAsync);
+			var filterBookCommand = ReactiveCommand.CreateFromTask<GenreViewModel?>(FilterAsync);
+
 			this.WhenAnyValue(m => m.SelectedBook)
 				.Throttle(TimeSpan.FromMilliseconds(300))
-				.Subscribe(BookSelectedAsync);
-
-
+				.InvokeCommand(selectedBookCommand);
+			
 			this.WhenAnyValue(m => m.SelectedGenre)
 				.Throttle(TimeSpan.FromMilliseconds(300))
-				.Subscribe(FilterAsync);
+				.InvokeCommand(filterBookCommand);
 
-			LoadAllBooksAsync(selectedCategory.Id);
-			LoadGenresAsync();
+			RxApp.MainThreadScheduler.Schedule(LoadAllBooksAsync);
+			RxApp.MainThreadScheduler.Schedule(LoadGenresAsync);
 		}
 
-		private async void LoadAllBooksAsync(int catId)
+		private async void LoadAllBooksAsync()
 		{
-			_allBooksInCat = await _dbRepository.CategoryRepository.GetBooksInCategoryAsync(catId);
+			_allBooksInCat = await _dbRepository.CategoryRepository.GetBooksInCategoryAsync(_selectedCategory.Id);
 			LoadBooks(_allBooksInCat);
 		}
 
-		private async void FilterAsync(GenreViewModel? genre)
+		private async Task FilterAsync(GenreViewModel? genre)
 		{
 			if (genre != null)
 			{
@@ -112,7 +119,7 @@ namespace MyBookshelf.ViewModels
 			_navigationStore.SwitchView(new HomePageViewModel(_dbRepository, _navigationStore));
 		}
 
-		private async void BookSelectedAsync(BookViewModel? book)
+		private async Task BookSelectedAsync(BookViewModel? book)
 		{
 			if (book == null)
 			{
