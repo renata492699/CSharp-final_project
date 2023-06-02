@@ -6,7 +6,7 @@ namespace MyBookshelf.Models.EntityFramework
 {
     public class MyBookshelfDbContext : DbContext
     {
-        private string _connectionString =
+        private readonly string _connectionString =
             @"server=(localdb)\MSSQLLocalDB; Initial Catalog=MyBookshelfDb; Integrated Security=true";
         public DbSet<Book> Books { get; set; }
         public DbSet<Category> Categories { get; set; }
